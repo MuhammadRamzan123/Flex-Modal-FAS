@@ -32,8 +32,8 @@ from utils_FAS_MultiModal2 import AvgrageMeter, performances_FAS_MultiModal
 ##########    Dataset root    ##########
 
 # root_dir    CASIA_SURF_CeFA; WMCA
-root_FAS_dir = '/kaggle/input/my-modal_data/Model_Data/'
-
+casia_root_FAS_dir = '/kaggle/input/my-modal-data/'
+wmca_root_FAS_dir = '/kaggle/input/wmca-evaluation/'
 # train_list     CASIA_SURF_CeFA
 train_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_train.txt'
 
@@ -140,7 +140,7 @@ def train_test():
         ###########################################
         model.train()
          
-        train_data = Spoofing_train(train_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([RandomHorizontalFlip(),  ToTensor(), Cutout(), Normaliztion()]))
+        train_data = Spoofing_train(train_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([RandomHorizontalFlip(),  ToTensor(), Cutout(), Normaliztion()]))
         dataloader_train = DataLoader(train_data, batch_size=args.batchsize, shuffle=True, num_workers=4)
 
         for i, sample_batched in enumerate(dataloader_train):
@@ -199,7 +199,7 @@ def train_test():
                 '''                val             '''
                 ##########################################
                 # val for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -233,7 +233,7 @@ def train_test():
                 '''                test             '''
                 ##########################################
                 # Intra-test for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -262,7 +262,7 @@ def train_test():
                 
                 ##########################################    
                 # Inter-test for WMCA
-                test_data = Spoofing_valtest(test_WMCA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -292,7 +292,7 @@ def train_test():
                 # sub-testing for WMCA
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_fakehead_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -320,7 +320,7 @@ def train_test():
                 #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -348,7 +348,7 @@ def train_test():
                 #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_glasses_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -376,7 +376,7 @@ def train_test():
                 #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_papermask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -403,7 +403,7 @@ def train_test():
                 
                 #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_print_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -430,7 +430,7 @@ def train_test():
                 
                 #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_replay_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -458,7 +458,7 @@ def train_test():
                 
                 #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
 
-                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -513,7 +513,7 @@ def train_test():
                 '''                val             '''
                 ##########################################
                 # val for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -547,7 +547,7 @@ def train_test():
                 '''                test             '''
                 ##########################################
                 # Intra-test for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -576,7 +576,7 @@ def train_test():
                 
                 ##########################################    
                 # Inter-test for WMCA
-                test_data = Spoofing_valtest(test_WMCA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -606,7 +606,7 @@ def train_test():
                 # sub-testing for WMCA
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_fakehead_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -634,7 +634,7 @@ def train_test():
                 #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -662,7 +662,7 @@ def train_test():
                 #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_glasses_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -690,7 +690,7 @@ def train_test():
                 #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_papermask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -717,7 +717,7 @@ def train_test():
                 
                 #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_print_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -744,7 +744,7 @@ def train_test():
                 
                 #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_replay_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -772,7 +772,7 @@ def train_test():
                 
                 #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
 
-                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -827,7 +827,7 @@ def train_test():
                 '''                val             '''
                 ##########################################
                 # val for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -861,7 +861,7 @@ def train_test():
                 '''                test             '''
                 ##########################################
                 # Intra-test for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -890,7 +890,7 @@ def train_test():
                 
                 ##########################################    
                 # Inter-test for WMCA
-                test_data = Spoofing_valtest(test_WMCA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -920,7 +920,7 @@ def train_test():
                 # sub-testing for WMCA
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_fakehead_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -948,7 +948,7 @@ def train_test():
                 #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -976,7 +976,7 @@ def train_test():
                 #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_glasses_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1004,7 +1004,7 @@ def train_test():
                 #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_papermask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1031,7 +1031,7 @@ def train_test():
                 
                 #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_print_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1058,7 +1058,7 @@ def train_test():
                 
                 #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_replay_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1086,7 +1086,7 @@ def train_test():
                 
                 #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
 
-                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1142,7 +1142,7 @@ def train_test():
                 '''                val             '''
                 ##########################################
                 # val for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(val_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1175,7 +1175,7 @@ def train_test():
                 '''                test             '''
                 ##########################################
                 # Intra-test for CASIA_SURF_CeFA
-                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_CASIA_SURF_CeFA_list, casia_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1203,7 +1203,7 @@ def train_test():
                 
                 ##########################################    
                 # Inter-test for WMCA
-                test_data = Spoofing_valtest(test_WMCA_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1232,7 +1232,7 @@ def train_test():
                 # sub-testing for WMCA
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_fakehead_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1259,7 +1259,7 @@ def train_test():
                 #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1286,7 +1286,7 @@ def train_test():
                 #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_glasses_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1313,7 +1313,7 @@ def train_test():
                 #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
                 
-                test_data = Spoofing_valtest(test_WMCA_papermask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1339,7 +1339,7 @@ def train_test():
                 
                 #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_print_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1365,7 +1365,7 @@ def train_test():
                 
                 #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
                 
-                test_data = Spoofing_valtest(test_WMCA_replay_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
@@ -1392,7 +1392,7 @@ def train_test():
                 
                 #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
 
-                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
                 dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
                 
                 map_score_list = []
