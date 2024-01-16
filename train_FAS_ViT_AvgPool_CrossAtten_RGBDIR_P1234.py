@@ -1451,7 +1451,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="save quality using landmarkpose model")
     parser.add_argument('--gpu', type=int, default=3, help='the gpu id used for predict')
     parser.add_argument('--lr', type=float, default=0.00001, help='initial learning rate')  
-    parser.add_argument('--batchsize', type=int, default=64, help='initial batchsize')  
+    parser.add_argument('--batchsize', type=int, default=8, help='initial batchsize')  
     parser.add_argument('--step_size', type=int, default=20, help='how many epochs lr decays once')  
     parser.add_argument('--gamma', type=float, default=0.5, help='gamma of optim.lr_scheduler.StepLR, decay of lr')
     parser.add_argument('--echo_batches', type=int, default=100, help='how many batches display once')  
