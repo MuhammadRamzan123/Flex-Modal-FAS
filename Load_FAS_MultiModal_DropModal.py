@@ -194,7 +194,10 @@ class Spoofing_train(Dataset):
 
     def get_single_image_x_RGB(self, image_path):
      try:
-        # Load image
+        image_x = np.zeros((224, 224, 3))
+        binary_mask = np.zeros((28, 28))
+
+	# Load image
         image_x_temp = cv2.imread(image_path)
 
         # Check if the image is loaded successfully
