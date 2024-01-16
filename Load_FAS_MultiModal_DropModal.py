@@ -193,7 +193,7 @@ class Spoofing_train(Dataset):
         return sample
 
     def get_single_image_x_RGB(self, image_path):
-    try:
+     try:
         # Load image
         image_x_temp = cv2.imread(image_path)
 
@@ -222,7 +222,7 @@ class Spoofing_train(Dataset):
                     binary_mask[i,j]=0
         return image_x_aug, binary_mask
 	    
-    except Exception as e:
+     except Exception as e:
         print(f"Error in get_single_image_x_RGB: {e}")
         # Handle the error appropriately, you may choose to return a default image or raise an exception
         return image_x
