@@ -6406,9 +6406,6 @@ CeFA/CeFA-Race/AF/AF-008/1_008_3_2_2/profile/0046.jpg CeFA/CeFA-Race/AF/AF-008/1
 CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/profile/0026.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/depth/0026.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/ir/0026.jpg 1
 CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/profile/0051.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/depth/0051.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/ir/0051.jpg 1
 CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/profile/0076.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/depth/0076.jpg CeFA/CeFA-Race/AF/AF-009/1_009_1_1_1/ir/0076.jpg 1
-CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/profile/0026.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/depth/0026.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/ir/0026.jpg 0
-CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/profile/0051.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/depth/0051.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/ir/0051.jpg 0
-CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/profile/0076.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/depth/0076.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_2/ir/0076.jpg 0
 CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/profile/0025.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/depth/0025.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/ir/0025.jpg 0
 CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/profile/0049.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/depth/0049.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/ir/0049.jpg 0
 CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/profile/0073.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/depth/0073.jpg CeFA/CeFA-Race/AF/AF-009/1_009_3_1_4/ir/0073.jpg 0
