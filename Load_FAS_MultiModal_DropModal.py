@@ -193,17 +193,22 @@ class Spoofing_train(Dataset):
         return sample
 
     def get_single_image_x_RGB(self, image_path):
-        
-        image_x = np.zeros((224, 224, 3))
-        binary_mask = np.zeros((28, 28))
-
-        # RGB
+    try:
+        # Load image
         image_x_temp = cv2.imread(image_path)
-        
-        #cv2.imwrite('temp.jpg', image_x_temp)
-  
+
+        # Check if the image is loaded successfully
+        if image_x_temp is None:
+            raise ValueError(f"Error loading image at path: {image_path}")
+
+        # Check if the image has a valid size
+        if image_x_temp.size == 0:
+            raise ValueError(f"Empty image loaded from path: {image_path}")
+
+        # Resize image
         image_x = cv2.resize(image_x_temp, (224, 224))
         
+        # Perform other processing if needed
         # data augment from 'imgaug' --> Add (value=(-40,40), per_channel=True), GammaContrast (gamma=(0.5,1.5))
         image_x_aug = seq.augment_image(image_x) 
         
@@ -215,8 +220,12 @@ class Spoofing_train(Dataset):
                     binary_mask[i,j]=1
                 else:
                     binary_mask[i,j]=0
-        
         return image_x_aug, binary_mask
+	    
+    except Exception as e:
+        print(f"Error in get_single_image_x_RGB: {e}")
+        # Handle the error appropriately, you may choose to return a default image or raise an exception
+        return image_x
         
     def get_single_image_x(self, image_path):
         
