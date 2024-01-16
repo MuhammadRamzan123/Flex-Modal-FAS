@@ -144,7 +144,13 @@ class Spoofing_valtest(Dataset):
                     binary_mask[i,j]=0
         
         return image_x, binary_mask
-        
+     except Exception as e:
+        print(f"Error in get_single_image_x_RGB: {e}")
+        # Handle the error appropriately, you may choose to return a default image or raise an exception
+	image_x_aug = np.zeros((224, 224, 3))
+	binary_mask = np.zeros((28, 28))
+	return image_x_aug, binary_mask
+	     
     def get_single_image_x(self, image_path):
         
         image_x = np.zeros((224, 224, 3))
