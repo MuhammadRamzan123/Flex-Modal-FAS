@@ -16,7 +16,10 @@ import timm.models.vision_transformer
 
 
 class VisionTransformer(timm.models.vision_transformer.VisionTransformer):
-
+    def __init__(self, dist_token=None, **kwargs):
+        super().__init__(**kwargs)
+        self.dist_token = dist_token
+        
     def forward_features(self, x):
         x = self.patch_embed(x)
         cls_token = self.cls_token.expand(x.shape[0], -1, -1)  # stole cls_tokens impl from Phil Wang, thanks
