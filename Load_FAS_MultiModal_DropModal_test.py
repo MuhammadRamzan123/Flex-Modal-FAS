@@ -151,19 +151,14 @@ class Spoofing_valtest(Dataset):
 	     return image_x_aug, binary_mask
 	     
     def get_single_image_x(self, image_path):
-        
-        image_x = np.zeros((224, 224, 3))
-
-        # RGB
-        image_x_temp = cv2.imread(image_path)
-        
-        #cv2.imwrite('temp.jpg', image_x_temp)
-  
-        image_x = cv2.resize(image_x_temp, (224, 224))
- 
-        
-        return image_x
-
-
+	    try:
+		    image_x = np.zeros((224, 224, 3))
+		    image_x_temp = cv2.imread(image_path)
+		    image_x = cv2.resize(image_x_temp, (224, 224))
+		    return image_x
+	    except Exception as e:
+		    print(f"Error in get_single_image_x_RGB: {e}")
+		    image_x = np.zeros((224, 224, 3))
+		    return image_x
 
 
