@@ -560,7 +560,7 @@ if __name__ == "__main__":
     parser.add_argument('--step_size', type=int, default=20, help='how many epochs lr decays once')  
     parser.add_argument('--gamma', type=float, default=0.5, help='gamma of optim.lr_scheduler.StepLR, decay of lr')
     parser.add_argument('--echo_batches', type=int, default=100, help='how many batches display once')  
-    parser.add_argument('--epochs', type=int, default=1, help='total training epochs')
+    parser.add_argument('--epochs', type=int, default=30, help='total training epochs')
     parser.add_argument('--log', type=str, default="ViT_AvgPool_CrossAtten_Channel_RGBDIR_P1234_temp", help='log and save model name')
 
     args = parser.parse_args()
