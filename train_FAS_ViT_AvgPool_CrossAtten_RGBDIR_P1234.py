@@ -43,17 +43,6 @@ val_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_val.txt'
 # Intra-test_list      CASIA_SURF_CeFA
 test_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_test.txt'
 
-# Cross-test      WMCA
-test_WMCA_list = 'FlexModal_Protocols/WMCA_test.txt' 
-# finegrained types
-test_WMCA_fakehead_list = 'FlexModal_Protocols/WMCA_test_fakehead.txt'
-test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test_flexiblemask.txt'
-test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test_glasses.txt'
-test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test_papermask.txt'
-test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test_print.txt'
-test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test_replay.txt'
-test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test_rigidmask.txt'
-
 
 
 # feature  -->   [ batch, channel, height, width ]
@@ -347,16 +336,7 @@ def train_test():
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
                 ##########################################################################   
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
-                
-                print('\n\n P2   RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P2  RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                
-                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
-                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
-                
-                
-                log_file.flush()
+
                 ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
                 print('\n\n P2 RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
                 log_file.write('\n\n P2 RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
@@ -436,18 +416,7 @@ def train_test():
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
                 ##########################################################################   
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
-                
-                print('\n\n P3   RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P3   RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                
-               
-                
-                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
-                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
-                
-                
-                log_file.flush()
+
                 ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
                 print('\n\n P3 RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
                 log_file.write('\n\n P3 RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
