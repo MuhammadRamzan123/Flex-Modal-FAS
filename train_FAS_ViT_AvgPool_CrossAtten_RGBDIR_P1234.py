@@ -43,6 +43,17 @@ val_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_val.txt'
 # Intra-test_list      CASIA_SURF_CeFA
 test_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_test.txt'
 
+# Cross-test      WMCA
+test_WMCA_list = 'FlexModal_Protocols/WMCA_test.txt' 
+# finegrained types
+test_WMCA_fakehead_list = 'FlexModal_Protocols/WMCA_test_fakehead.txt'
+test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test_flexiblemask.txt'
+test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test_glasses.txt'
+test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test_papermask.txt'
+test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test_print.txt'
+test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test_replay.txt'
+test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test_rigidmask.txt'
+
 
 
 # feature  -->   [ batch, channel, height, width ]
@@ -249,17 +260,249 @@ def train_test():
                 with open(CASIA_SURF_CeFA_test_filename, 'w') as file:
                     file.writelines(map_score_list)    
                 
+                ##########################################    
+                # Inter-test for WMCA
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_filename = args.log+'/'+ args.log+'_WMCA_test.txt' 
+                with open(WMCA_test_filename, 'w') as file:
+                    file.writelines(map_score_list)    
+                    
+                
+                ##########################################    
+                # sub-testing for WMCA
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_fakehead_filename = args.log+'/'+ args.log+'_WMCA_test_fakehead.txt' 
+                with open(WMCA_test_fakehead_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_flexiblemask_filename = args.log+'/'+ args.log+'_WMCA_test_flexiblemask.txt' 
+                with open(WMCA_test_flexiblemask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_glasses_filename = args.log+'/'+ args.log+'_WMCA_test_glasses.txt' 
+                with open(WMCA_test_glasses_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_papermask_filename = args.log+'/'+ args.log+'_WMCA_test_papermask.txt' 
+                with open(WMCA_test_papermask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_print_filename = args.log+'/'+ args.log+'_WMCA_test_print.txt' 
+                with open(WMCA_test_print_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_replay_filename = args.log+'/'+ args.log+'_WMCA_test_replay.txt' 
+                with open(WMCA_test_replay_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                
+                #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
 
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_rigidmask_filename = args.log+'/'+ args.log+'_WMCA_test_rigidmask.txt' 
+                with open(WMCA_test_rigidmask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
                    
                 
                 
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
-                ##########################################################################
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
-                print('\n\n P1 RGB: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P1 RGB: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, PR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                ##########################################################################   
+                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
+                
+                print('\n\n P1  RGB: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                log_file.write('\n\n P1  RGB: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, PR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                
+                print('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                log_file.write('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f\n' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                
+                
+                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                
+                
                 log_file.flush()
+                
                 
                 
                 ###############################################################################################
@@ -331,16 +574,249 @@ def train_test():
                 with open(CASIA_SURF_CeFA_test_filename, 'w') as file:
                     file.writelines(map_score_list)    
                 
-               
+                ##########################################    
+                # Inter-test for WMCA
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_filename = args.log+'/'+ args.log+'_WMCA_test.txt' 
+                with open(WMCA_test_filename, 'w') as file:
+                    file.writelines(map_score_list)    
+                    
+                
+                ##########################################    
+                # sub-testing for WMCA
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_fakehead_filename = args.log+'/'+ args.log+'_WMCA_test_fakehead.txt' 
+                with open(WMCA_test_fakehead_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_flexiblemask_filename = args.log+'/'+ args.log+'_WMCA_test_flexiblemask.txt' 
+                with open(WMCA_test_flexiblemask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_glasses_filename = args.log+'/'+ args.log+'_WMCA_test_glasses.txt' 
+                with open(WMCA_test_glasses_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_papermask_filename = args.log+'/'+ args.log+'_WMCA_test_papermask.txt' 
+                with open(WMCA_test_papermask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_print_filename = args.log+'/'+ args.log+'_WMCA_test_print.txt' 
+                with open(WMCA_test_print_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_replay_filename = args.log+'/'+ args.log+'_WMCA_test_replay.txt' 
+                with open(WMCA_test_replay_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                
+                #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
+
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, image_x_zeros)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_rigidmask_filename = args.log+'/'+ args.log+'_WMCA_test_rigidmask.txt' 
+                with open(WMCA_test_rigidmask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                   
+                
                 
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
                 ##########################################################################   
-
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
-                print('\n\n P2 RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P2 RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
+                
+                print('\n\n P2   RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                log_file.write('\n\n P2  RGBD: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                
+                print('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                log_file.write('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f\n' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                
+                
+                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                
+                
                 log_file.flush()
+                
                 
                 
                 ###############################################################################################
@@ -412,15 +888,249 @@ def train_test():
                 with open(CASIA_SURF_CeFA_test_filename, 'w') as file:
                     file.writelines(map_score_list)    
                 
-     
+                ##########################################    
+                # Inter-test for WMCA
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_filename = args.log+'/'+ args.log+'_WMCA_test.txt' 
+                with open(WMCA_test_filename, 'w') as file:
+                    file.writelines(map_score_list)    
+                    
+                
+                ##########################################    
+                # sub-testing for WMCA
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_fakehead_filename = args.log+'/'+ args.log+'_WMCA_test_fakehead.txt' 
+                with open(WMCA_test_fakehead_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_flexiblemask_filename = args.log+'/'+ args.log+'_WMCA_test_flexiblemask.txt' 
+                with open(WMCA_test_flexiblemask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_glasses_filename = args.log+'/'+ args.log+'_WMCA_test_glasses.txt' 
+                with open(WMCA_test_glasses_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_papermask_filename = args.log+'/'+ args.log+'_WMCA_test_papermask.txt' 
+                with open(WMCA_test_papermask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_print_filename = args.log+'/'+ args.log+'_WMCA_test_print.txt' 
+                with open(WMCA_test_print_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_replay_filename = args.log+'/'+ args.log+'_WMCA_test_replay.txt' 
+                with open(WMCA_test_replay_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                
+                #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
+
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+                    image_x_zeros = sample_batched['image_x_zeros'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, image_x_zeros, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_rigidmask_filename = args.log+'/'+ args.log+'_WMCA_test_rigidmask.txt' 
+                with open(WMCA_test_rigidmask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                   
+                
+                
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
                 ##########################################################################   
-
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
-                print('\n\n P3 RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P3 RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
+                
+                print('\n\n P3   RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                log_file.write('\n\n P3   RGBIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                
+                print('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                log_file.write('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f\n' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                
+                
+                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                
+                
                 log_file.flush()
+                
                 
                 
                 
@@ -491,15 +1201,239 @@ def train_test():
                 with open(CASIA_SURF_CeFA_test_filename, 'w') as file:
                     file.writelines(map_score_list)    
                 
+                ##########################################    
+                # Inter-test for WMCA
+                test_data = Spoofing_valtest(test_WMCA_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
         
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_filename = args.log+'/'+ args.log+'_WMCA_test.txt' 
+                with open(WMCA_test_filename, 'w') as file:
+                    file.writelines(map_score_list)    
+                    
+                
+                ##########################################    
+                # sub-testing for WMCA
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_fakehead_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_fakehead_filename = args.log+'/'+ args.log+'_WMCA_test_fakehead.txt' 
+                with open(WMCA_test_fakehead_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_flexiblemask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_flexiblemask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_flexiblemask_filename = args.log+'/'+ args.log+'_WMCA_test_flexiblemask.txt' 
+                with open(WMCA_test_flexiblemask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_glasses_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_glasses_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_glasses_filename = args.log+'/'+ args.log+'_WMCA_test_glasses.txt' 
+                with open(WMCA_test_glasses_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_papermask_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                
+                test_data = Spoofing_valtest(test_WMCA_papermask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                 
+                WMCA_test_papermask_filename = args.log+'/'+ args.log+'_WMCA_test_papermask.txt' 
+                with open(WMCA_test_papermask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_print_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_print_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_print_filename = args.log+'/'+ args.log+'_WMCA_test_print.txt' 
+                with open(WMCA_test_print_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                #test_WMCA_replay_list = 'FlexModal_Protocols/WMCA_test.txt'
+                
+                test_data = Spoofing_valtest(test_WMCA_replay_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+                
+                WMCA_test_replay_filename = args.log+'/'+ args.log+'_WMCA_test_replay.txt' 
+                with open(WMCA_test_replay_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                
+                
+                #test_WMCA_rigidmask_list = 'FlexModal_Protocols/WMCA_test.txt'
+
+                test_data = Spoofing_valtest(test_WMCA_rigidmask_list, wmca_root_FAS_dir, transform=transforms.Compose([Normaliztion_valtest(), ToTensor_valtest()]))
+                dataloader_test = DataLoader(test_data, batch_size=256, shuffle=False, num_workers=4)
+                
+                map_score_list = []
+                
+                for i, sample_batched in enumerate(dataloader_test):
+                    # get the inputs
+                    inputs, spoof_label = sample_batched['image_x'].cuda(), sample_batched['spoofing_label'].cuda()
+                    inputs_depth = sample_batched['image_x_depth'].cuda()
+                    inputs_ir = sample_batched['image_x_ir'].cuda() 
+        
+                    optimizer.zero_grad()
+                    
+                    #pdb.set_trace()
+                    logits  =  model(inputs, inputs_depth, inputs_ir)
+                    for test_batch in range(inputs.shape[0]):
+                        map_score = 0.0
+                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
+              
+                WMCA_test_rigidmask_filename = args.log+'/'+ args.log+'_WMCA_test_rigidmask.txt' 
+                with open(WMCA_test_rigidmask_filename, 'w') as file:
+                    file.writelines(map_score_list) 
+                   
+                
                 
                 ##########################################################################   
                 #       Performance measurement for both intra- and inter-testings
                 ##########################################################################   
-
-                ACER_CASIA_SURF_CeFA, TPR_FPR0001 = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename)
-                print('\n\n P4 RGBDIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
-                log_file.write('\n\n P4 RGBDIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA: ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                ACER_CASIA_SURF_CeFA, TPR_FPR0001, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask = performances_FAS_MultiModal(CASIA_SURF_CeFA_val_filename, CASIA_SURF_CeFA_test_filename, WMCA_test_filename, WMCA_test_fakehead_filename, WMCA_test_flexiblemask_filename, WMCA_test_glasses_filename, WMCA_test_papermask_filename, WMCA_test_print_filename, WMCA_test_replay_filename, WMCA_test_rigidmask_filename)
+                
+                print('\n\n P4  RGBDIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                log_file.write('\n\n P4   RGBDIR: \n epoch:%d, Intra-testing!\n CASIA_SURF_CeFA:  ACER= %.4f, TPR_FPR0001= %.4f\n' % (epoch + 1, ACER_CASIA_SURF_CeFA, TPR_FPR0001))
+                
+                print('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                log_file.write('epoch:%d, Cross-testing!\n WMCA:  ACER= %.4f, APCER_WMCA= %.4f, BPCER_WMCA= %.4f, TPR_FPR001= %.4f\n' % (epoch + 1, ACER_WMCA, APCER_WMCA, BPCER_WMCA, TPR_FPR001))
+                
+                
+                print('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                log_file.write('epoch:%d, WMCA: APCER_fakehead= %.4f, APCER_flexiblemask= %.4f, APCER_glasses= %.4f, APCER_papermask= %.4f, APCER_print= %.4f, APCER_replay= %.4f, APCER_rigidmask= %.4f\n\n\n' % (epoch + 1, APCER_fakehead, APCER_flexiblemask, APCER_glasses, APCER_papermask, APCER_print, APCER_replay,  APCER_rigidmask))
+                
+                
                 log_file.flush()
                 
                 
