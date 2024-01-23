@@ -122,14 +122,6 @@ class Spoofing_valtest(Dataset):
 	# Load image
         image_x_temp = cv2.imread(image_path)
 
-        # Check if the image is loaded successfully
-        if image_x_temp is None:
-            raise ValueError(f"Error loading image at path: {image_path}")
-
-        # Check if the image has a valid size
-        if image_x_temp.size == 0:
-            raise ValueError(f"Empty image loaded from path: {image_path}")
-
         # Resize image
         image_x = cv2.resize(image_x_temp, (224, 224))
         
@@ -145,7 +137,6 @@ class Spoofing_valtest(Dataset):
         
         return image_x, binary_mask
      except Exception as e:
-	     print(f"Error in get_single_image_x_RGB: {e}")
 	     image_x_aug = np.zeros((224, 224, 3))
 	     binary_mask = np.zeros((28, 28))
 	     return image_x_aug, binary_mask
@@ -157,7 +148,6 @@ class Spoofing_valtest(Dataset):
 		    image_x = cv2.resize(image_x_temp, (224, 224))
 		    return image_x
 	    except Exception as e:
-		    print(f"Error in get_single_image_x_RGB: {e}")
 		    image_x = np.zeros((224, 224, 3))
 		    return image_x
 
