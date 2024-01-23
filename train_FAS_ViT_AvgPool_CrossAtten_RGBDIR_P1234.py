@@ -33,7 +33,7 @@ from utils_FAS_MultiModal2 import AvgrageMeter, performances_FAS_MultiModal
 
 # root_dir    CASIA_SURF_CeFA; WMCA
 casia_root_FAS_dir = '/kaggle/input/my-modal-data/Model_Data/'
-wmca_root_FAS_dir = '/kaggle/input/wmca-evaluation/WMCA/'
+wmca_root_FAS_dir = '/kaggle/input/wmcaprocessed/'
 # train_list     CASIA_SURF_CeFA
 train_CASIA_SURF_CeFA_list = 'FlexModal_Protocols/CASIA-SURF_CeFA_train.txt'
 
