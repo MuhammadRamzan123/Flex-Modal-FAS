@@ -219,7 +219,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
                 
                 CASIA_SURF_CeFA_val_filename = args.log+'/'+ args.log+'_CASIA_SURF_CeFA_val.txt'
@@ -253,7 +253,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
                 
                 CASIA_SURF_CeFA_test_filename = args.log+'/'+ args.log+'_CASIA_SURF_CeFA_test.txt' 
@@ -280,7 +280,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
                 
                 WMCA_test_filename = args.log+'/'+ args.log+'_WMCA_test.txt' 
@@ -310,7 +310,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
                 
                 WMCA_test_fakehead_filename = args.log+'/'+ args.log+'_WMCA_test_fakehead.txt' 
@@ -338,7 +338,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
                  
                 WMCA_test_flexiblemask_filename = args.log+'/'+ args.log+'_WMCA_test_flexiblemask.txt' 
@@ -366,7 +366,7 @@ def train_test():
                     logits  =  model(inputs, image_x_zeros, image_x_zeros)
                     for test_batch in range(inputs.shape[0]):
                         map_score = 0.0
-                        map_score += F.softmax(logits)[test_batch][1]
+                        map_score += F.softmax(logits, dim=1)[test_batch][1]
                         map_score_list.append('{} {}\n'.format(map_score, spoof_label[test_batch][0]))
               
                 WMCA_test_glasses_filename = args.log+'/'+ args.log+'_WMCA_test_glasses.txt' 
